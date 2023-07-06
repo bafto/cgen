@@ -1,5 +1,7 @@
 package cgen
 
+import "strings"
+
 type CType string
 
 // some predefined C primitive types
@@ -13,7 +15,7 @@ const (
 	FLOAT    CType = "float"
 	DOUBLE   CType = "double"
 	// _Bool primitive type (c99)
-	_BOOL CType = "_Bool"
+	BOOL CType = "_Bool"
 	// needs the <stdbool.h> include
 	STDBOOL CType = "bool"
 )
@@ -25,6 +27,10 @@ func Ptr(typ CType) CType {
 
 // preprends the const prefix to typ
 func Const(typ CType) CType {
+	// const char* != char *const
+	if strings.HasSuffix(string(typ), "*") {
+		return typ[:len(typ)-1] + " *const"
+	}
 	return "const " + typ
 }
 
