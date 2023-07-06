@@ -5,31 +5,32 @@ import (
 	"strings"
 )
 
-type CType string
+// a Type name in C (can be any string like "int" or "struct Point" etc.)
+type Type string
 
 // some predefined C primitive types
 const (
-	VOID     CType = "void"
-	CHAR     CType = "char"
-	SHORT    CType = "short"
-	INT      CType = "int"
-	LONG     CType = "long"
-	LONGLONG CType = "long long"
-	FLOAT    CType = "float"
-	DOUBLE   CType = "double"
+	VOID     Type = "void"
+	CHAR     Type = "char"
+	SHORT    Type = "short"
+	INT      Type = "int"
+	LONG     Type = "long"
+	LONGLONG Type = "long long"
+	FLOAT    Type = "float"
+	DOUBLE   Type = "double"
 	// _Bool primitive type (c99)
-	BOOL CType = "_Bool"
+	BOOL Type = "_Bool"
 	// needs the <stdbool.h> include
-	STDBOOL CType = "bool"
+	STDBOOL Type = "bool"
 )
 
 // returns a type representing a pointer to typ
-func Ptr(typ CType) CType {
+func Ptr(typ Type) Type {
 	return typ + "*"
 }
 
 // returns a const version of typ
-func Const(typ CType) CType {
+func Const(typ Type) Type {
 	// const char* != char *const
 	if strings.HasSuffix(string(typ), "*") {
 		return typ[:len(typ)-1] + " *const"
@@ -39,14 +40,14 @@ func Const(typ CType) CType {
 
 // returns a unsigned version of typ
 // (should only be used on numeric types)
-func Unsigned(typ CType) CType {
+func Unsigned(typ Type) Type {
 	return "unsigned " + typ
 }
 
 // returns a function pointer type without name
 // e.g.: FuncPtr(INT, INT, INT) == "int (*) (int, int)"
-func FuncPtr(returnType CType, params ...CType) CType {
-	result := CType(fmt.Sprintf("%s (*) (", returnType))
+func FuncPtr(returnType Type, params ...Type) Type {
+	result := Type(fmt.Sprintf("%s (*) (", returnType))
 
 	for i, param := range params {
 		result += param

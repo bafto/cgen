@@ -4,7 +4,7 @@ import "testing"
 
 func TestCTypes(t *testing.T) {
 	tests := []struct {
-		typ      CType
+		typ      Type
 		expected string
 	}{
 		{

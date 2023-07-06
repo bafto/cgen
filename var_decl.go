@@ -10,7 +10,7 @@ type VarDecl struct {
 	// name of the variable
 	Name string
 	// type of the variable as string ("int", "long long",, "const int" etc.)
-	Type CType
+	Type Type
 	// wether the variable is static
 	IsStatic bool
 	// wether the variable is extern

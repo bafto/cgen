@@ -5,7 +5,7 @@ type FuncDecl struct {
 	// name of the function
 	Name string
 	// return type of the function as string ("int", "long long", etc.)
-	ReturnType CType
+	ReturnType Type
 	// wether the function is static
 	IsStatic bool
 	// wether the function is extern
@@ -20,7 +20,14 @@ func (decl FuncDecl) GetName() string {
 }
 
 func (decl FuncDecl) String() string {
-	return string(decl.ReturnType) + " "
+	result := string(decl.ReturnType) + " " + decl.Name + "("
+	for i := range decl.Parameters {
+		result += string(decl.Parameters[i].Type)
+		if i < len(decl.Parameters)-1 {
+			result += ", "
+		}
+	}
+	return result + ")"
 }
 
 func (decl FuncDecl) DeclString() string {
