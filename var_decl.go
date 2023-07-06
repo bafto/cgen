@@ -24,10 +24,6 @@ func (decl VarDecl) GetName() string {
 }
 
 func (decl VarDecl) String() string {
-	return decl.DeclString()
-}
-
-func (decl VarDecl) DeclString() string {
 	var result string
 	if decl.IsStatic {
 		result += "static "
@@ -42,8 +38,10 @@ func (decl VarDecl) DeclString() string {
 	if strings.Contains(result, "(*)") {
 		return strings.Replace(result, "(*)", fmt.Sprintf("(*%s)", decl.Name), 1)
 	}
-	result += " " + decl.Name
-	return result
+	if decl.Name != "" {
+		result += " "
+	}
+	return result + decl.Name
 }
 
 func (VarDecl) needsSemicolon() bool {

@@ -7,8 +7,17 @@ func main() {
 
 	my_header.AddInclude("<stdbool.h>")
 
+	my_header.Add(cgen.Macro{
+		Name:        "_POSIX_C_SOURCE",
+		Replacement: "1",
+	})
+
+	my_header.Add(cgen.Macro{
+		Name: "NOMINMAX",
+	})
+
 	// typedef
-	my_header.AddDecl(cgen.Typedef{
+	my_header.Add(cgen.Typedef{
 		Name: "Point",
 		Type: cgen.StructType([]cgen.VarDecl{ // the struct type is anonymous
 			{
@@ -29,7 +38,7 @@ func main() {
 	// struct declaration without typedef
 	// this decl will appear above the typedef
 	// because the header is sorted by default
-	my_header.AddDecl(cgen.StructDecl{
+	my_header.Add(cgen.StructDecl{
 		Name: "Point2",
 		Fields: []cgen.VarDecl{
 			{
@@ -44,14 +53,14 @@ func main() {
 	})
 
 	// extern variable
-	my_header.AddDecl(cgen.VarDecl{
+	my_header.Add(cgen.VarDecl{
 		Name:     "my_point",
 		Type:     "Point",
 		IsExtern: true,
 	})
 
 	// func decl
-	my_header.AddDecl(cgen.FuncDecl{
+	my_header.Add(cgen.FuncDecl{
 		Name: "foo",
 		// the order is handled correctly, this results in a unsigned char *const, not a const unsigned char*
 		ReturnType: cgen.Const(cgen.Ptr(cgen.Unsigned(cgen.CHAR))),
@@ -65,6 +74,23 @@ func main() {
 				Type: cgen.FuncPtr(cgen.INT, cgen.INT), // generates a function pointer int(*func)(int)
 			},
 		},
+	})
+
+	my_header.Add(cgen.FuncDecl{
+		Name:       "bar",
+		ReturnType: cgen.VOID,
+		Parameters: []cgen.VarDecl{
+			{
+				Type: cgen.STRING, // const char*
+			},
+		},
+		IsVariadic: true,
+	})
+
+	my_header.Add(cgen.FuncDecl{
+		Name:       "baz",
+		ReturnType: cgen.VOID,
+		IsVariadic: true,
 	})
 
 	// write the header file "my_header.h"

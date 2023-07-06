@@ -34,7 +34,7 @@ func (h *Header) AsString(ordered bool) string {
 	builder.WriteRune('\n')
 
 	declWriter := func(decl Declaration) {
-		builder.WriteString(decl.DeclString())
+		builder.WriteString(decl.String())
 		if decl.needsSemicolon() {
 			builder.WriteRune(';')
 		}
@@ -43,6 +43,8 @@ func (h *Header) AsString(ordered bool) string {
 
 	if ordered {
 		// print the decls in a formatted order
+		applyFiltered[Macro](h.Decls, declWriter)
+		builder.WriteRune('\n')
 		applyFiltered[StructDecl](h.Decls, declWriter)
 		builder.WriteRune('\n')
 		applyFiltered[Typedef](h.Decls, declWriter)
@@ -74,7 +76,7 @@ func (h *Header) AddInclude(incl string) {
 	h.Includes = append(h.Includes, incl)
 }
 
-func (h *Header) AddDecl(decl Declaration) {
+func (h *Header) Add(decl Declaration) {
 	h.Decls = append(h.Decls, decl)
 }
 

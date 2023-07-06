@@ -1,14 +1,14 @@
 package cgen
 
+// the basically anything that can be in a header file
+// like function, variable or struct declarations
+// typedefs, macros, etc.
 type Declaration interface {
 	// name of the declaration
-	// e.g. the function name for functionDecls
+	// e.g. the function name for functionDecls etc.
 	GetName() string
-	// string representation (might be the full DeclString)
+	// string representation as it will appear in the generated code
 	String() string
-	// the decl as C code without the semicolon
-	// e.g.: void f(), extern int i, etc.
-	DeclString() string
 	// wether the declaration must be terminated with a semicolon
 	needsSemicolon() bool
 }

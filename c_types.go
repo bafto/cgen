@@ -22,6 +22,8 @@ const (
 	BOOL Type = "_Bool"
 	// needs the <stdbool.h> include
 	STDBOOL Type = "bool"
+	// const char *
+	STRING Type = "const char*"
 )
 
 // returns a type representing a pointer to typ

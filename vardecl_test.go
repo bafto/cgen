@@ -40,7 +40,7 @@ func TestVarDecl(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		if result := test.decl.DeclString(); result != test.expected {
+		if result := test.decl.String(); result != test.expected {
 			t.Fatalf("%s != %s", result, test.expected)
 		}
 	}

@@ -3,6 +3,9 @@
 
 #include <stdbool.h>
 
+#define _POSIX_C_SOURCE 1
+#define NOMINMAX 
+
 struct Point2 {
 	double x;
 	double y;
@@ -17,6 +20,8 @@ typedef struct {
 extern Point my_point;
 
 unsigned char *const foo(int i, int (*func)(int));
+void bar(const char*, ...);
+void baz(...);
 
 
 #endif

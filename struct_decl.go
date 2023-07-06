@@ -13,10 +13,6 @@ func (decl StructDecl) GetName() string {
 }
 
 func (decl StructDecl) String() string {
-	return decl.DeclString()
-}
-
-func (decl StructDecl) DeclString() string {
 	var result string
 	result += "struct "
 	if decl.Name != "" {
@@ -25,12 +21,12 @@ func (decl StructDecl) DeclString() string {
 		result += "{\n"
 	}
 
-	for i := range decl.Fields {
+	for _, field := range decl.Fields {
 		// just to be sure
-		decl.Fields[i].IsExtern = false
-		decl.Fields[i].IsStatic = false
-		decl.Fields[i].IsVolatile = false
-		result += "\t" + decl.Fields[i].DeclString() + ";\n"
+		field.IsExtern = false
+		field.IsStatic = false
+		field.IsVolatile = false
+		result += "\t" + field.String() + ";\n"
 	}
 	return result + "}"
 }
@@ -42,5 +38,5 @@ func (StructDecl) needsSemicolon() bool {
 // returns the given decl as inline type (without the name)
 func (decl StructDecl) AsType() Type {
 	decl.Name = ""
-	return Type(decl.DeclString())
+	return Type(decl.String())
 }

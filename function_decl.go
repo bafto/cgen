@@ -10,6 +10,8 @@ type FuncDecl struct {
 	IsStatic bool
 	// wether the function is extern
 	IsExtern bool
+	// wether the function also takes variadic arguments
+	IsVariadic bool
 	// the parameters of the function
 	// IsStatic, IsVolatile and IsExtern of them should be false
 	Parameters []VarDecl
@@ -20,17 +22,6 @@ func (decl FuncDecl) GetName() string {
 }
 
 func (decl FuncDecl) String() string {
-	result := string(decl.ReturnType) + " " + decl.Name + "("
-	for i := range decl.Parameters {
-		result += string(decl.Parameters[i].Type)
-		if i < len(decl.Parameters)-1 {
-			result += ", "
-		}
-	}
-	return result + ")"
-}
-
-func (decl FuncDecl) DeclString() string {
 	var result string
 	if decl.IsStatic {
 		result += "static "
@@ -39,15 +30,18 @@ func (decl FuncDecl) DeclString() string {
 		result += "extern "
 	}
 	result += string(decl.ReturnType) + " " + decl.Name + "("
-	for i := range decl.Parameters {
+	for i, param := range decl.Parameters {
 		// just to be sure
-		decl.Parameters[i].IsExtern = false
-		decl.Parameters[i].IsStatic = false
-		decl.Parameters[i].IsVolatile = false
-		result += decl.Parameters[i].DeclString()
-		if i < len(decl.Parameters)-1 {
+		param.IsExtern = false
+		param.IsStatic = false
+		param.IsVolatile = false
+		result += param.String()
+		if i < len(decl.Parameters)-1 || decl.IsVariadic {
 			result += ", "
 		}
+	}
+	if decl.IsVariadic {
+		result += "..."
 	}
 	result += ")"
 	return result
