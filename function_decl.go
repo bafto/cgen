@@ -40,6 +40,10 @@ func (decl FuncDecl) DeclString() string {
 	}
 	result += string(decl.ReturnType) + " " + decl.Name + "("
 	for i := range decl.Parameters {
+		// just to be sure
+		decl.Parameters[i].IsExtern = false
+		decl.Parameters[i].IsStatic = false
+		decl.Parameters[i].IsVolatile = false
 		result += decl.Parameters[i].DeclString()
 		if i < len(decl.Parameters)-1 {
 			result += ", "

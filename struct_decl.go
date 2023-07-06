@@ -18,13 +18,19 @@ func (decl StructDecl) String() string {
 
 func (decl StructDecl) DeclString() string {
 	var result string
-	result += "struct " + decl.Name + " {\n"
-	for _, field := range decl.Fields {
+	result += "struct "
+	if decl.Name != "" {
+		result += decl.Name + " {\n"
+	} else {
+		result += "{\n"
+	}
+
+	for i := range decl.Fields {
 		// just to be sure
-		field.IsExtern = false
-		field.IsStatic = false
-		field.IsVolatile = false
-		result += "\t" + field.DeclString() + ";\n"
+		decl.Fields[i].IsExtern = false
+		decl.Fields[i].IsStatic = false
+		decl.Fields[i].IsVolatile = false
+		result += "\t" + decl.Fields[i].DeclString() + ";\n"
 	}
 	return result + "}"
 }

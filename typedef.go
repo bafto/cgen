@@ -17,7 +17,7 @@ func (decl Typedef) String() string {
 
 func (decl Typedef) DeclString() string {
 	var result string
-	result += "typedef " + string(decl.Type) + " " + decl.Name + ";"
+	result += "typedef " + string(decl.Type) + " " + decl.Name
 	return result
 }
 

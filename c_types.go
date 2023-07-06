@@ -47,7 +47,7 @@ func Unsigned(typ Type) Type {
 // returns a function pointer type without name
 // e.g.: FuncPtr(INT, INT, INT) == "int (*) (int, int)"
 func FuncPtr(returnType Type, params ...Type) Type {
-	result := Type(fmt.Sprintf("%s (*) (", returnType))
+	result := Type(fmt.Sprintf("%s (*)(", returnType))
 
 	for i, param := range params {
 		result += param

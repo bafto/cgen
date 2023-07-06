@@ -40,8 +40,14 @@ func (h *Header) AsString(ordered bool) string {
 
 	if ordered {
 		// print the decls in a formatted order
+		applyFiltered[StructDecl](h.Decls, declWriter)
+		builder.WriteRune('\n')
+		applyFiltered[Typedef](h.Decls, declWriter)
+		builder.WriteRune('\n')
 		applyFiltered[VarDecl](h.Decls, declWriter)
+		builder.WriteRune('\n')
 		applyFiltered[FuncDecl](h.Decls, declWriter)
+		builder.WriteRune('\n')
 	} else {
 		applyFiltered[Declaration](h.Decls, declWriter)
 	}
@@ -50,28 +56,18 @@ func (h *Header) AsString(ordered bool) string {
 }
 
 // writes h to path
-func (h *Header) WriteToFile(path string) error {
-	return os.WriteFile(path, []byte(h.AsString(true)), os.ModePerm)
+func (h *Header) WriteToFile(path string, ordered bool) error {
+	return os.WriteFile(path, []byte(h.AsString(ordered)), os.ModePerm)
 }
 
 // h.WriteToFile(h.Name)
-func (h *Header) WriteFile() error {
-	return h.WriteToFile(h.Name)
+func (h *Header) WriteFile(ordered bool) error {
+	return h.WriteToFile(h.Name, ordered)
 }
 
-// appends incl to h.Includes
-func (h *Header) AddRawInclude(incl string) {
-	h.Includes = append(h.Includes, incl)
-}
-
-// like AddInclude but with <> instead of ""
-func (h *Header) AddStdInclude(incl string) {
-	h.Includes = append(h.Includes, fmt.Sprintf("<%s>", incl))
-}
-
-// adds "incl" to h.Includes
+// adds incl to h.Includes
 func (h *Header) AddInclude(incl string) {
-	h.Includes = append(h.Includes, fmt.Sprintf(`"%s"`, incl))
+	h.Includes = append(h.Includes, incl)
 }
 
 func (h *Header) AddDecl(decl Declaration) {
