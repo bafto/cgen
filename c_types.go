@@ -63,5 +63,9 @@ func FuncPtr(returnType Type, params ...Type) Type {
 
 // creates a anonymous struct type with the given fields
 func StructType(fields []VarDecl) Type {
-	return StructDecl{Fields: fields}.AsType()
+	return StructDecl{Fields: fields}.AsAnonymousType()
+}
+
+func EnumType(values []EnumValue) Type {
+	return EnumDecl{Values: values}.AsAnonymousType()
 }

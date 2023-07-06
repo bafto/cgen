@@ -36,7 +36,11 @@ func (StructDecl) needsSemicolon() bool {
 }
 
 // returns the given decl as inline type (without the name)
-func (decl StructDecl) AsType() Type {
+func (decl StructDecl) AsAnonymousType() Type {
 	decl.Name = ""
 	return Type(decl.String())
+}
+
+func (decl StructDecl) GetTypeName() Type {
+	return "struct " + Type(decl.Name)
 }

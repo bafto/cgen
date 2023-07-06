@@ -33,28 +33,28 @@ func (h *Header) AsString(ordered bool) string {
 	}
 	builder.WriteRune('\n')
 
-	declWriter := func(decl Declaration) {
+	declWriter := func(decl Declaration, seperator string) {
 		builder.WriteString(decl.String())
 		if decl.needsSemicolon() {
 			builder.WriteRune(';')
 		}
 		builder.WriteRune('\n')
+		builder.WriteString(seperator)
 	}
 
 	if ordered {
 		// print the decls in a formatted order
-		applyFiltered[Macro](h.Decls, declWriter)
+		applyFiltered[Macro](h.Decls, declWriter, "")
 		builder.WriteRune('\n')
-		applyFiltered[StructDecl](h.Decls, declWriter)
+		applyFiltered[EnumDecl](h.Decls, declWriter, "\n")
+		applyFiltered[StructDecl](h.Decls, declWriter, "\n")
+		applyFiltered[Typedef](h.Decls, declWriter, "\n")
+		applyFiltered[VarDecl](h.Decls, declWriter, "")
 		builder.WriteRune('\n')
-		applyFiltered[Typedef](h.Decls, declWriter)
-		builder.WriteRune('\n')
-		applyFiltered[VarDecl](h.Decls, declWriter)
-		builder.WriteRune('\n')
-		applyFiltered[FuncDecl](h.Decls, declWriter)
+		applyFiltered[FuncDecl](h.Decls, declWriter, "")
 		builder.WriteRune('\n')
 	} else {
-		applyFiltered[Declaration](h.Decls, declWriter)
+		applyFiltered[Declaration](h.Decls, declWriter, "\n")
 	}
 
 	builder.WriteString("\n#endif\n")
@@ -81,10 +81,10 @@ func (h *Header) Add(decl Declaration) {
 }
 
 // applies fn to ever T in decls
-func applyFiltered[T Declaration](decls []Declaration, fn func(Declaration)) {
+func applyFiltered[T Declaration](decls []Declaration, fn func(Declaration, string), sep string) {
 	for _, decl := range decls {
 		if _, ok := decl.(T); ok {
-			fn(decl)
+			fn(decl, sep)
 		}
 	}
 }

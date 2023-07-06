@@ -16,7 +16,29 @@ func main() {
 		Name: "NOMINMAX",
 	})
 
-	// typedef
+	enum := cgen.EnumDecl{
+		Name: "Day",
+		Values: []cgen.EnumValue{
+			{
+				Name: "Saturday",
+			},
+			{
+				Name:  "Sunday",
+				Value: "0",
+			},
+			{
+				Name: "Monday",
+			},
+			{
+				Name: "Wednesday",
+			},
+		},
+	}
+
+	my_header.Add(enum)
+
+	my_header.Add(cgen.Typedef{Name: "WeekDay", Type: enum.GetTypeName()})
+
 	my_header.Add(cgen.Typedef{
 		Name: "Point",
 		Type: cgen.StructType([]cgen.VarDecl{ // the struct type is anonymous
