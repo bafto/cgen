@@ -23,6 +23,9 @@ const incl_fmt = "#include %s\n"
 // if ordered is true, the declarations are ordered by their typ
 func (h *Header) AsString(ordered bool) string {
 	builder := strings.Builder{}
+	incl_guard := strings.ToUpper(strings.TrimSuffix(h.Name, ".h") + "_H")
+	builder.WriteString(fmt.Sprintf("#ifndef %s\n#define %s\n\n", incl_guard, incl_guard))
+
 	builder.Grow(len(h.Includes) * (len(incl_fmt) + 5))
 
 	for i := range h.Includes {
@@ -52,6 +55,7 @@ func (h *Header) AsString(ordered bool) string {
 		applyFiltered[Declaration](h.Decls, declWriter)
 	}
 
+	builder.WriteString("\n#endif\n")
 	return builder.String()
 }
 

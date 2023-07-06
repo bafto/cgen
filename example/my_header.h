@@ -1,3 +1,6 @@
+#ifndef MY_HEADER_H
+#define MY_HEADER_H
+
 #include <stdbool.h>
 
 struct Point2 {
@@ -15,3 +18,5 @@ extern Point my_point;
 
 unsigned char *const foo(int i, int (*func)(int));
 
+
+#endif
