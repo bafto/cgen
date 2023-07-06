@@ -1,6 +1,9 @@
 package cgen
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 type CType string
 
@@ -20,12 +23,12 @@ const (
 	STDBOOL CType = "bool"
 )
 
-// appends the * suffix to typ
+// returns a type representing a pointer to typ
 func Ptr(typ CType) CType {
 	return typ + "*"
 }
 
-// preprends the const prefix to typ
+// returns a const version of typ
 func Const(typ CType) CType {
 	// const char* != char *const
 	if strings.HasSuffix(string(typ), "*") {
@@ -34,8 +37,23 @@ func Const(typ CType) CType {
 	return "const " + typ
 }
 
-// prepends the unsigned prefix to typ
+// returns a unsigned version of typ
 // (should only be used on numeric types)
 func Unsigned(typ CType) CType {
 	return "unsigned " + typ
+}
+
+// returns a function pointer type without name
+// e.g.: FuncPtr(INT, INT, INT) == "int (*) (int, int)"
+func FuncPtr(returnType CType, params ...CType) CType {
+	result := CType(fmt.Sprintf("%s (*) (", returnType))
+
+	for i, param := range params {
+		result += param
+		if i < len(params)-1 {
+			result += ", "
+		}
+	}
+
+	return result + ")"
 }

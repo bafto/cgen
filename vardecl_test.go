@@ -30,6 +30,13 @@ func TestVarDecl(t *testing.T) {
 			},
 			"char* k",
 		},
+		{
+			VarDecl{
+				Name: "foo",
+				Type: FuncPtr(INT, INT, INT),
+			},
+			"int (*foo) (int, int)",
+		},
 	}
 
 	for _, test := range tests {

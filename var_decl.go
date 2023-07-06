@@ -1,5 +1,10 @@
 package cgen
 
+import (
+	"fmt"
+	"strings"
+)
+
 // a variable declaration
 type VarDecl struct {
 	// name of the variable
@@ -33,7 +38,11 @@ func (decl VarDecl) DeclString() string {
 	if decl.IsVolatile {
 		result += "volatile "
 	}
-	result += string(decl.Type) + " " + decl.Name
+	result += string(decl.Type)
+	if strings.Contains(result, "(*)") {
+		return strings.Replace(result, "(*)", fmt.Sprintf("(*%s)", decl.Name), 1)
+	}
+	result += " " + decl.Name
 	return result
 }
 
