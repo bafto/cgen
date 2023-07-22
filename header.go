@@ -48,6 +48,7 @@ func (h *Header) AsString(ordered bool) string {
 		builder.WriteRune('\n')
 		applyFiltered[EnumDecl](h.Decls, declWriter, "\n")
 		applyFiltered[StructDecl](h.Decls, declWriter, "\n")
+		applyFiltered[UnionDecl](h.Decls, declWriter, "\n")
 		applyFiltered[Typedef](h.Decls, declWriter, "\n")
 		applyFiltered[VarDecl](h.Decls, declWriter, "")
 		builder.WriteRune('\n')

@@ -115,6 +115,14 @@ func main() {
 		IsVariadic: true,
 	})
 
+	my_header.Add(cgen.UnionDecl{
+		Name: "IntOrLong",
+		Fields: []cgen.VarDecl{
+			{Name: "i", Type: cgen.INT},
+			{Name: "l", Type: cgen.LONGLONG},
+		},
+	})
+
 	// write the header file "my_header.h"
 	// pass false to disable the sorting of declarations
 	my_header.WriteFile(true)

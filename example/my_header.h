@@ -18,6 +18,11 @@ struct Point2 {
 	double y;
 };
 
+union IntOrLong {
+	int i;
+	long long l;
+};
+
 typedef enum Day WeekDay;
 
 typedef struct {
